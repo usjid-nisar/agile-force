@@ -1,0 +1,13 @@
+backend/
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── config/
+│   │   └── database.py
+│   ├── models/
+│   │   └── article.py
+│   ├── schemas/
+│   │   └── article.py
+│   └── routes/
+│       └── article.py
+└── requirements.txt 
