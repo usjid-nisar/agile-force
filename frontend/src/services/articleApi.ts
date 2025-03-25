@@ -35,7 +35,12 @@ export const articleApi = createApi({
   tagTypes: ['Article'],
   endpoints: (builder) => ({
     getArticles: builder.query<Article[], void>({
-      query: () => '/articles',
+      query: () => 'articles',
+      transformResponse: (response: Article[]) => {
+        return response.sort((a, b) => 
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      },
       providesTags: ['Article'],
     }),
     getArticle: builder.query<Article, string>({
@@ -50,13 +55,12 @@ export const articleApi = createApi({
       }),
       invalidatesTags: ['Article'],
     }),
-    updateArticle: builder.mutation<Article, { id: string; article: ArticleUpdate }>({
-      query: ({ id, article }) => ({
-        url: `/articles/${id}`,
+    updateArticle: builder.mutation<Article, { id: string; title: string; content: string; description?: string }>({
+      query: ({ id, ...data }) => ({
+        url: `articles/${id}`,
         method: 'PUT',
-        body: article,
+        body: data,
       }),
-      invalidatesTags: ['Article'],
     }),
     deleteArticle: builder.mutation<void, string>({
       query: (id) => ({

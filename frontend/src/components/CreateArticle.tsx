@@ -32,14 +32,14 @@ export default function CreateArticle() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white shadow rounded-lg p-6">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white shadow-lg rounded-xl p-8 animate-fade-in transition-all duration-300 hover:shadow-xl">
       <div>
-        <label className="block text-sm font-medium text-gray-700">Title</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
         <input
           type="text"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
         />
         {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
       </div>
@@ -77,7 +77,7 @@ export default function CreateArticle() {
 
       <button
         type="submit"
-        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02]"
       >
         Create Article
       </button>

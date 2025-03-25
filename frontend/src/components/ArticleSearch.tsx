@@ -59,8 +59,8 @@ export default function ArticleSearch() {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col gap-2">
+    <div className="space-y-4 animate-fade-in">
+      <div className="flex flex-col gap-3">
         <div className="flex gap-4">
           <div className="relative flex-1">
             <input
@@ -68,7 +68,7 @@ export default function ArticleSearch() {
               value={searchInput}
               onChange={handleSearchChange}
               placeholder="Search articles (minimum 2 characters)..."
-              className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pl-4 pr-10 py-2"
+              className="w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 pl-4 pr-10 py-3 transition-all duration-200"
               minLength={2}
             />
             {(isLoading || isFetching) && (
@@ -80,7 +80,7 @@ export default function ArticleSearch() {
           <select
             value={searchLimit}
             onChange={handleLimitChange}
-            className="rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-2"
+            className="rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 py-3 px-4 transition-all duration-200"
           >
             <option value={5}>5 results</option>
             <option value={10}>10 results</option>
@@ -104,13 +104,14 @@ export default function ArticleSearch() {
         <div className="space-y-4">
           {searchResults.length > 0 ? (
             <>
-              <h3 className="text-lg font-medium">
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">
                 Search Results ({searchResults.length})
               </h3>
-              {searchResults.map((article) => (
+              {searchResults.map((article, index) => (
                 <div 
                   key={article._id} 
-                  className="bg-white shadow rounded-lg p-4 hover:shadow-md transition-shadow"
+                  className="bg-white shadow-md rounded-xl p-6 hover:shadow-xl transition-all duration-300 animate-slide-in"
+                  style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <h4 className="text-md font-semibold text-gray-900">
                     {article.title}
