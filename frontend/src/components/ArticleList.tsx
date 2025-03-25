@@ -184,7 +184,7 @@ export default function ArticleList() {
                 <div className="p-6">
                   <div className="flex justify-between items-start mb-4">
                     <h3 className="text-xl font-semibold text-gray-900 line-clamp-2">
-                      {article.title}
+                      <h5>{article.title}</h5>
                     </h3>
                     <span className="text-sm text-gray-500">
                       {new Date(article.created_at).toLocaleDateString()}
@@ -192,9 +192,13 @@ export default function ArticleList() {
                   </div>
                   
                   <p className="text-gray-600 mb-4 line-clamp-3">
-                    {article.content}
+                    <h2>Content:</h2>
+                    {article.content || 'No content available'}
                   </p>
-
+                  <p className="text-gray-600 mb-4 line-clamp-3">
+                    <h2>Description:</h2>
+                    {article.description || 'No description available'}
+                  </p>
                   <div className="flex justify-between items-center">
                     <button
                       onClick={() => handleViewSummary(article)}

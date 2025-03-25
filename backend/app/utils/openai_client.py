@@ -14,7 +14,7 @@ async def generate_summary(content: str) -> str:
             messages=[
                 {
                     "role": "system",
-                    "content": "You are a helpful assistant that generates concise summaries of articles."
+                    "content": "You are a helpful assistant that generates concise summaries of articles. Do not tell the user that you are an AI assistant. Write the summary in a way that is easy to understand and in a way that is not too long. Handle i do not know or i cannot answer situations gracefully."
                 },
                 {
                     "role": "user",
