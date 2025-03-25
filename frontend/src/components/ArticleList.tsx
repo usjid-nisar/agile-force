@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useGetArticlesQuery, useDeleteArticleMutation, useGenerateSummaryMutation, useCreateEmbeddingMutation } from '../services/articleApi';
 import EditArticle from './EditArticle';
 import { Dialog } from '@headlessui/react';
+import toast from 'react-hot-toast';
 
 export default function ArticleList() {
   const { data: articles, isLoading, error } = useGetArticlesQuery();
@@ -27,8 +28,10 @@ export default function ArticleList() {
         summary: result.summary,
         title: title,
       });
+      toast.success('Summary generated successfully!');
     } catch (err) {
       console.error('Failed to generate summary:', err);
+      toast.error('Failed to generate summary');
     }
   };
 
