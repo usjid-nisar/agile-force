@@ -40,7 +40,7 @@ A modern, full-stack application for managing articles with AI-powered features.
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/usjid-nisar/agile-force
 cd article-management-system
 ```
 
@@ -80,7 +80,8 @@ Once the backend is running, visit `http://localhost:8000/docs` for the interact
 
 ## 🎨 Features & Screenshots
 
-[You can add screenshots of your application here]
+<img width="1608" alt="Screenshot 2025-03-25 at 5 55 58 PM" src="https://github.com/user-attachments/assets/04df7445-8b92-43fe-a1f1-11bbafb1487c" />
+
 
 ## 🤝 Contributing
 
