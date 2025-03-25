@@ -7,7 +7,6 @@ export default function CreateArticle() {
     title: '',
     content: '',
     description: '',
-    summary: '',
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -25,62 +24,59 @@ export default function CreateArticle() {
 
     try {
       await createArticle(formData).unwrap();
-      setFormData({ title: '', content: '', description: '', summary: '' });
+      setFormData({ title: '', content: '', description: '' });
     } catch (err) {
       console.error('Failed to create article:', err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white shadow-lg rounded-xl p-8 animate-fade-in transition-all duration-300 hover:shadow-xl">
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-        <input
-          type="text"
-          value={formData.title}
-          onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 transition-all duration-200"
-        />
-        {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
-      </div>
+    <div className="max-w-2xl mx-auto py-8">
+      <form onSubmit={handleSubmit} className="space-y-8 bg-white shadow-xl rounded-2xl p-10 animate-fade-in transition-all duration-300">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6">Create New Article</h2>
+        
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Title</label>
+          <input
+            type="text"
+            value={formData.title}
+            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50"
+            placeholder="Enter article title"
+          />
+          {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Content</label>
-        <textarea
-          value={formData.content}
-          onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-          rows={4}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        />
-        {errors.content && <p className="mt-1 text-sm text-red-600">{errors.content}</p>}
-      </div>
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Description</label>
+          <input
+            type="text"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50"
+            placeholder="Brief description of the article"
+          />
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Description</label>
-        <input
-          type="text"
-          value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        />
-      </div>
+        <div className="space-y-2">
+          <label className="block text-sm font-semibold text-gray-700">Content</label>
+          <textarea
+            value={formData.content}
+            onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+            rows={6}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-gray-50"
+            placeholder="Write your article content here..."
+          />
+          {errors.content && <p className="mt-1 text-sm text-red-600">{errors.content}</p>}
+        </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700">Summary</label>
-        <textarea
-          value={formData.summary}
-          onChange={(e) => setFormData({ ...formData, summary: e.target.value })}
-          rows={2}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-        />
-      </div>
-
-      <button
-        type="submit"
-        className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:scale-[1.02]"
-      >
-        Create Article
-      </button>
-    </form>
+        <button
+          type="submit"
+          className="w-full py-4 px-6 bg-blue-600 text-white font-medium rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transform transition-all duration-200 hover:scale-[1.02]"
+        >
+          Create Article
+        </button>
+      </form>
+    </div>
   );
 } 
