@@ -72,16 +72,17 @@ export default function ArticleList() {
       toast.success('Summary generated successfully!');
     } catch (err) {
       console.error('Failed to generate summary:', err);
-      toast.error('Failed to generate summary');
+      toast.error('Failed to generate summary due to missing values in the article');
     }
   };
 
   const handleCreateEmbedding = async (id: string) => {
     try {
       await createEmbedding(id).unwrap();
-      // You might want to show a success message here
+      toast.success('Embedding generated successfully');
     } catch (err) {
       console.error('Failed to create embedding:', err);
+      toast.error('Failed to generate embedding due to missing values in the article');
     }
   };
 
@@ -200,12 +201,21 @@ export default function ArticleList() {
                     {article.description || 'No description available'}
                   </p>
                   <div className="flex justify-between items-center">
-                    <button
-                      onClick={() => handleViewSummary(article)}
-                      className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200"
-                    >
-                      View Summary
-                    </button>
+                    <div className="flex gap-1">
+                      <button
+                        onClick={() => handleGenerateSummary(article._id, article.title)}
+                        className="px-2 py-0.5 text-xs font-medium bg-green-50 text-green-600 rounded hover:bg-green-100 transition-colors duration-200 shadow-sm border border-green-200"
+                      >
+                        Summary
+                      </button>
+                      <button
+                        onClick={() => handleCreateEmbedding(article._id)}
+                        className="px-2 py-0.5 text-xs font-medium bg-purple-50 text-purple-600 rounded hover:bg-purple-100 transition-colors duration-200 shadow-sm border border-purple-200"
+                      >
+                        Embed
+                      </button>
+                    </div>
+                    
                     
                     <div className="flex gap-2">
                       <button
