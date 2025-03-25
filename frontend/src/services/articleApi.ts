@@ -24,6 +24,11 @@ interface ArticleUpdate {
   summary?: string;
 }
 
+interface SearchParams {
+  query: string;
+  limit: number;
+}
+
 export const articleApi = createApi({
   reducerPath: 'articleApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000' }),
@@ -73,11 +78,20 @@ export const articleApi = createApi({
         method: 'POST',
       }),
     }),
-    searchArticles: builder.query<Article[], string>({
-      query: (searchQuery) => ({
+    searchArticles: builder.query<Article[], SearchParams>({
+      query: (params) => ({
         url: `/articles/search`,
-        params: { query: searchQuery },
+        params: {
+          query: params.query,
+          limit: params.limit
+        },
       }),
+      transformErrorResponse: (response) => {
+        if ('error' in response) {
+          return response.error;
+        }
+        return 'An unknown error occurred';
+      },
     }),
   }),
 });
