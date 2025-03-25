@@ -1,6 +1,7 @@
 import { Tab } from '@headlessui/react';
 import ArticleList from './components/ArticleList';
 import CreateArticle from './components/CreateArticle';
+import ArticleSearch from './components/ArticleSearch';
 
 function App() {
   return (
@@ -30,6 +31,14 @@ function App() {
             }>
               Create Article
             </Tab>
+            <Tab className={({ selected }) =>
+              `w-full rounded-lg py-2.5 text-sm font-medium leading-5
+              ${selected 
+                ? 'bg-white text-blue-700 shadow'
+                : 'text-blue-100 hover:bg-white/[0.12] hover:text-white'}`
+            }>
+              Search
+            </Tab>
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
@@ -37,6 +46,9 @@ function App() {
             </Tab.Panel>
             <Tab.Panel>
               <CreateArticle />
+            </Tab.Panel>
+            <Tab.Panel>
+              <ArticleSearch />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>

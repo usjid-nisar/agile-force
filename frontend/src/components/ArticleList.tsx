@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGetArticlesQuery, useDeleteArticleMutation, useGenerateSummaryMutation } from '../services/articleApi';
+import { useGetArticlesQuery, useDeleteArticleMutation, useGenerateSummaryMutation, useCreateEmbeddingMutation } from '../services/articleApi';
 import EditArticle from './EditArticle';
 import { Dialog } from '@headlessui/react';
 
@@ -7,6 +7,7 @@ export default function ArticleList() {
   const { data: articles, isLoading, error } = useGetArticlesQuery();
   const [deleteArticle] = useDeleteArticleMutation();
   const [generateSummary] = useGenerateSummaryMutation();
+  const [createEmbedding] = useCreateEmbeddingMutation();
   const [editingArticle, setEditingArticle] = useState<string | null>(null);
   const [summaryDialog, setSummaryDialog] = useState<{
     isOpen: boolean;
@@ -28,6 +29,15 @@ export default function ArticleList() {
       });
     } catch (err) {
       console.error('Failed to generate summary:', err);
+    }
+  };
+
+  const handleCreateEmbedding = async (id: string) => {
+    try {
+      await createEmbedding(id).unwrap();
+      // You might want to show a success message here
+    } catch (err) {
+      console.error('Failed to create embedding:', err);
     }
   };
 
@@ -61,6 +71,12 @@ export default function ArticleList() {
                 className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
               >
                 Delete
+              </button>
+              <button
+                onClick={() => handleCreateEmbedding(article._id)}
+                className="px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700"
+              >
+                Generate Embedding
               </button>
             </div>
           </div>

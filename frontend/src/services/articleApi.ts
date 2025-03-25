@@ -67,6 +67,18 @@ export const articleApi = createApi({
       }),
       invalidatesTags: ['Article'],
     }),
+    createEmbedding: builder.mutation<{ message: string }, string>({
+      query: (id) => ({
+        url: `/articles/${id}/embed`,
+        method: 'POST',
+      }),
+    }),
+    searchArticles: builder.query<Article[], string>({
+      query: (searchQuery) => ({
+        url: `/articles/search`,
+        params: { query: searchQuery },
+      }),
+    }),
   }),
 });
 
@@ -77,4 +89,6 @@ export const {
   useUpdateArticleMutation,
   useDeleteArticleMutation,
   useGenerateSummaryMutation,
+  useCreateEmbeddingMutation,
+  useSearchArticlesQuery,
 } = articleApi; 

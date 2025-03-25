@@ -1,12 +1,41 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Query
 from typing import List
 from bson import ObjectId
 from schemas.article import ArticleCreate, ArticleUpdate, ArticleInDB
 from config.database import article_collection
 from datetime import datetime
 from utils.openai_client import generate_summary
+from utils.pinecone_client import store_embedding, search_similar
 
 router = APIRouter()
+
+@router.get("/search", response_model=List[ArticleInDB])
+async def search_articles(
+    query: str = Query(..., description="Search query"),
+    limit: int = Query(5, description="Number of results to return")
+):
+    try:
+        # Search for similar articles
+        similar_docs = await search_similar(query, limit)
+        
+        # Get full article details for the matches
+        article_ids = [ObjectId(match.id) for match in similar_docs]
+        articles = await article_collection.find(
+            {"_id": {"$in": article_ids}}
+        ).to_list(None)
+        
+        # Sort articles to match the order of search results
+        id_to_article = {str(art["_id"]): art for art in articles}
+        sorted_articles = [
+            {**id_to_article[match.id], "_id": match.id}
+            for match in similar_docs
+            if match.id in id_to_article
+        ]
+        
+        return sorted_articles
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/", response_model=List[ArticleInDB])
 async def get_articles():
@@ -87,5 +116,34 @@ async def summarize_article(id: str):
             return {"summary": summary}
             
         raise HTTPException(status_code=404, detail="Article not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/{id}/embed", response_model=dict)
+async def create_article_embedding(id: str):
+    try:
+        if not ObjectId.is_valid(id):
+            raise HTTPException(status_code=400, detail="Invalid article ID")
+            
+        article = await article_collection.find_one({"_id": ObjectId(id)})
+        if not article:
+            raise HTTPException(status_code=404, detail="Article not found")
+        
+        # Create metadata for the embedding
+        metadata = {
+            "title": article["title"],
+            "description": article["description"],
+            "summary": article["summary"]
+        }
+        
+        # Store the embedding
+        await store_embedding(
+            id=str(article["_id"]),
+            text=article["content"],
+            metadata=metadata
+        )
+        
+        return {"message": "Embedding created successfully"}
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e)) 
