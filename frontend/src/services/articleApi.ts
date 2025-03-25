@@ -60,6 +60,13 @@ export const articleApi = createApi({
       }),
       invalidatesTags: ['Article'],
     }),
+    generateSummary: builder.mutation<{ summary: string }, string>({
+      query: (id) => ({
+        url: `/articles/${id}/summarize`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Article'],
+    }),
   }),
 });
 
@@ -69,4 +76,5 @@ export const {
   useCreateArticleMutation,
   useUpdateArticleMutation,
   useDeleteArticleMutation,
+  useGenerateSummaryMutation,
 } = articleApi; 

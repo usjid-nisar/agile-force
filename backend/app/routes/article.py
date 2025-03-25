@@ -4,6 +4,7 @@ from bson import ObjectId
 from schemas.article import ArticleCreate, ArticleUpdate, ArticleInDB
 from config.database import article_collection
 from datetime import datetime
+from utils.openai_client import generate_summary
 
 router = APIRouter()
 
@@ -65,4 +66,26 @@ async def delete_article(article_id: str):
             return
         raise HTTPException(status_code=404, detail="Article not found")
     except:
-        raise HTTPException(status_code=400, detail="Invalid article ID") 
+        raise HTTPException(status_code=400, detail="Invalid article ID")
+
+@router.post("/{id}/summarize", response_model=dict)
+async def summarize_article(id: str):
+    try:
+        if not ObjectId.is_valid(id):
+            raise HTTPException(status_code=400, detail="Invalid article ID")
+            
+        article = await article_collection.find_one({"_id": ObjectId(id)})
+        if article:
+            summary = await generate_summary(article["content"])
+            
+            # Update the article with the new summary
+            await article_collection.update_one(
+                {"_id": ObjectId(id)},
+                {"$set": {"summary": summary}}
+            )
+            
+            return {"summary": summary}
+            
+        raise HTTPException(status_code=404, detail="Article not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e)) 
