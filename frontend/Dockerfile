@@ -11,9 +11,6 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Build the application
-RUN npm run build
-
 # Expose port 5173
 EXPOSE 5173
 
